@@ -2,4 +2,35 @@
 
 body {
   font-family: 'Lato', Helvetica, Arial, sans-serif;
+  background-color: olivedrab
+}
+
+form{
+  position: absolute;
+  width: 350px;
+  height:350px;
+  margin: 0 auto;
+  top: 300px;
+  left:550px;
+}
+
+h1 {
+  position: absolute;
+  left:520px;
+  right:250px;
+  top: 100px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 80px
+}
+
+#flicks1{
+  position: absolute;
+  left: 300px;
+  top: 500px;
+}
+
+#flicks2{
+  position: absolute;
+  left: 300px;
+  top: 600px;
 }
