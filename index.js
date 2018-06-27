@@ -47,9 +47,20 @@ addItems(event){
   const list = document.querySelector('#flicks')
   list.appendChild(item)
 
+  //delete an item
+  const button = document.createElement("button")
+  button.innerHTML = "delete"
+  item.appendChild(button)
+  button.addEventListener('click', removeItem)
+
+  function removeItem(){
+    const ul = document.getElementById("flicks")
+    if(ul.childNodes){
+     ul.removeChild(item)
+  }
+}
   f.reset()
   f.flickName.focus()
 }
 }
-
 const app = new App()
