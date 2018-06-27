@@ -3,7 +3,7 @@ class App{
     const form = document.querySelector('form#flickForm')
     form.addEventListener('submit', (ev) =>{
       ev.preventDefault()
-      this.addItems(ev)
+      this.handleSubmit(ev)
     })
     this.arr=[]
   }
@@ -33,7 +33,7 @@ renderItem(flick) {
    return item
   }
 
-addItems(event){
+handleSubmit(event){
   const f = event.target
 
   const flick ={
@@ -48,6 +48,7 @@ addItems(event){
   list.appendChild(item)
 
   //delete an item
+  var i=0
   const button = document.createElement("button")
   button.innerHTML = "delete"
   item.appendChild(button)
@@ -55,10 +56,18 @@ addItems(event){
 
   function removeItem(){
     const ul = document.getElementById("flicks")
-    if(ul.childNodes){
+    while(ul.childNodes){
      ul.removeChild(item)
+     i++
   }
+  this.arr.splice(i, 1)
+  console.log(this.arr)
 }
+  //add a favourite
+  const button2 = document.createElement('button')
+  button2.innerHTML = "Add to favourites"
+  item.appendChild(button2)
+
   f.reset()
   f.flickName.focus()
 }
