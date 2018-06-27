@@ -11,22 +11,24 @@
   <h1>Chrismess</h1>
 
   <form id="flickForm">
-  <input 
-     type = "text" 
-     name="flickName1" 
-     autofocus
-     placeholder = "Enter a flick"
-  >
-  <input 
-     type = "text" 
-     name="flickName2" 
-     placeholder = "Enter another flick"
-  >
-  <button type = "submit">Add to list</button>
+    <div class = "justTesting seriously">
+       <input 
+         type = "text" 
+         name="flickName" 
+         autofocus
+         placeholder = "Enter a flick"
+       >
+       <input 
+        class = "smaller"
+        type = "text" 
+        name="chrisName" 
+        placeholder = "Which Chris?"
+       >
+      <button type = "submit">Add to list</button>
+    </div>
   </form>
  
-  <div id ="flicks1"></div>
-  <div id ="flicks2"></div>
+  <ul id ="flicks"></ul>
   
   <script src="index.js"></script>
 </body>

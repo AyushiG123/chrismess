@@ -23,14 +23,13 @@ h1 {
   font-size: 80px
 }
 
-#flicks1{
+#flicks{
   position: absolute;
   left: 300px;
   top: 500px;
 }
 
-#flicks2{
-  position: absolute;
-  left: 300px;
-  top: 600px;
+chris{
+  display: block;
 }
+
