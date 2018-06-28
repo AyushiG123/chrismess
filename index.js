@@ -1,83 +1,149 @@
-class App{
-  constructor(){
+class App {
+  constructor() {
+    this.list = document.querySelector('#flicks')
+
+    this.arr = []
+    this.load()
+
     const form = document.querySelector('form#flickForm')
-    form.addEventListener('submit', (ev) =>{
+    form.addEventListener('submit', (ev) => {
       ev.preventDefault()
-      this.handleSubmit(ev)
+      this.addItems(ev)
     })
-    this.arr=[]
   }
 
-
-renderProperty(name, value) {
-  const span = document.createElement('span')
-  span.classList.add(name)
-  span.textContent = value
-  return span
-}
-
-renderItem(flick) { 
-    const item = document.createElement('li')
-    item.classList.add('flick')
-  
-    // get the list of properties
-    const properties = Object.keys(flick)
-   
-    // loop over the properties
-    properties.forEach((propertyName)=> {
-      // build a span, and append it to the list
-      const span = this.renderProperty(propertyName, flick[propertyName])
-      item.appendChild(span)
-    })
-  
-   return item
+  save() {
+    // store the flicks array in localStorage
+    localStorage.setItem('arr', JSON.stringify(this.arr))
   }
 
-handleSubmit(event){
-  const f = event.target
+  load() {
+    // load flicks from localStorage
+    const arr = JSON.parse(localStorage.getItem('arr'))
 
-  const flick ={
-    name: f.flickName.value,
-    chris: f.chrisName.value,
-  }
-  this.arr.push(flick)
-  console.log(this.arr)
-  const item = this.renderItem(flick)
-
-  const list = document.querySelector('#flicks')
-  list.appendChild(item)
-
-  //delete an item
-  var i=0
-  const button = document.createElement("button")
-  button.innerHTML = "delete"
-  item.appendChild(button)
-  button.addEventListener('click', removeItem)
-
-  function removeItem(){
-    const ul = document.getElementById("flicks")
-    while(ul.childNodes){
-     ul.removeChild(item)
-     i++
-  }
-  this.arr.splice(i, 1)
-  console.log(this.arr)
-}
-  //add a favourite
-  const button2 = document.createElement('button')
-  button2.innerHTML = "Add to favourites"
-  item.appendChild(button2)
-  button2.addEventListener('click', changeColor)
-  
-  function changeColor(){
-    const col = document.getElementById("flicks")
-    if(col.childNodes){
-      item.style.color = "red"
+    if (arr) {
+      // add each flick to the UI
+      arr.forEach(flick => this.addFlick(flick))
     }
   }
 
-  f.reset()
-  f.flickName.focus()
+  renderProperty(name, value) {
+    const span = document.createElement('span')
+    span.classList.add(name)
+    span.textContent = value
+    return span
+  }
+
+  renderActionButtons(flick, item) {
+    const actions = document.createElement('div')
+    actions.classList.add('actions')
+
+    // add a delete button
+    const deleteButton = document.createElement('button')
+    deleteButton.classList.add('remove')
+    deleteButton.innerHTML = '<i class="far fa-trash-alt" title="remove flick"></i>'
+    deleteButton
+      .addEventListener(
+        'click',
+        (_ev) => this.removeItem(flick, item)
+      )
+    actions.appendChild(deleteButton)
+
+    // add a favorite button
+    const favButton = document.createElement('button')
+    favButton.classList.add('fav')
+    favButton.innerHTML = '<i class="fas fa-star" title="toggle favorite"></i>'
+    favButton
+      .addEventListener(
+        'click',
+        (_ev) => this.markFav(flick, item)
+      )
+    actions.appendChild(favButton)
+
+    return actions
+  }
+
+  renderProperties(flick, item) {
+    const div = document.createElement('div')
+    div.classList.add('info')
+
+    // get the list of properties
+    const properties = Object.keys(flick)
+
+    // loop over the properties
+    properties.forEach((propertyName) => {
+      // build a span, and append it to the div
+      const span = this.renderProperty(propertyName, flick[propertyName])
+      div.appendChild(span)
+    })
+
+    return div
+  }
+
+  renderItem(flick) {
+    const item = document.createElement('li')
+    item.classList.add('flick')
+
+    // add all the properties
+    const properties = this.renderProperties(flick, item)
+    item.appendChild(properties)
+
+    // add action buttons
+    const actions = this.renderActionButtons(flick, item)
+    item.appendChild(actions)
+
+    return item
+  }
+
+  markFav(flick, item) {
+    // update both the UI and the array
+    flick.favorite = item.classList.toggle('fav')
+
+    // update localStorage
+    this.save()
+  }
+
+  removeItem(flick, item) {
+    // remove from the UI
+    this.list.removeChild(item)
+
+    // remove from the array
+    const i = this.arr.indexOf(flick)
+    this.arr.splice(i, 1)
+
+    // update localStorage
+    this.save()
+  }
+
+  addFlick(flick) {
+    this.arr.push(flick)
+
+    const item = this.renderItem(flick)
+
+    // mark it as a favorite, if applicable
+    if (flick.favorite) {
+      item.classList.add('fav')
+    }
+
+    // add it to the DOM
+    this.list.appendChild(item)
+  }
+
+  addItems(ev) {
+    const f = ev.target
+
+    const flick = {
+      name: f.flickName.value,
+      chris: f.chrisName.value,
+      favorite: false,
+    }
+
+    this.addFlick(flick)
+    this.save()
+
+    f.reset()
+    f.flickName.focus()
+  }
 }
-}
+
 const app = new App()
