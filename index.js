@@ -67,6 +67,14 @@ handleSubmit(event){
   const button2 = document.createElement('button')
   button2.innerHTML = "Add to favourites"
   item.appendChild(button2)
+  button2.addEventListener('click', changeColor)
+  
+  function changeColor(){
+    const col = document.getElementById("flicks")
+    if(col.childNodes){
+      item.style.color = "red"
+    }
+  }
 
   f.reset()
   f.flickName.focus()
